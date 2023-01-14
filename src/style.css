@@ -1,0 +1,24 @@
+:root {
+  --square-r: 8rem;
+  --square-c: 8rem;
+}
+.game-container {
+  display: grid;
+  grid-template-columns: repeat(3, var(--square-c));
+  grid-template-rows: repeat(3, var(--square-r));
+}
+.board-boxes {
+  background: #aaa;
+  outline: 1px solid black;
+}
+.row-3,
+.row-2,
+.row-1 {
+}
+.col-a,
+.col-b,
+.col-c {
+}
+.board-boxes:hover {
+  opacity: 0.5;
+}
