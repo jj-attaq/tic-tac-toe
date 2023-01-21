@@ -4,12 +4,14 @@
 }
 .game-container {
   display: grid;
+  /* gap: 0.33rem; */
   grid-template-columns: repeat(3, var(--square-c));
   grid-template-rows: repeat(3, var(--square-r));
 }
 .board-boxes {
   background: #aaa;
   outline: 1px solid black;
+  /* border-radius: 0.33rem; */
 }
 .row-3,
 .row-2,
