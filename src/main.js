@@ -7,24 +7,37 @@ const Gameboard = (() => {
   const board = document.createElement('div');
   board.setAttribute('class', 'game-container');
 
-  const square = (id) => {
+  const square = (id, col, row) => {
     const square = document.createElement('div')
-    square.setAttribute('class', 'board-boxes');
+    square.classList.add('board-boxes', col, row);
     square.setAttribute('id', id);
+    square.textContent = id;
     return square;
   }
 
   const boardArray = (() => {
     const arr = [];
-    let letter = '';
+    let column = '';
+    let row = '';
+
     for(let i = 0; i < 9; i++) {
-      if (i < 3) letter = 'a';
-      if (i < 6 && i > 2) letter = 'b';
-      if (i < 9 && i > 5) letter = 'c';
+      (() => {
+        if (i < 3) row = '3';
+        if (i < 6 && i > 2) row = '2';
+        if (i < 9 && i > 5) row = '1';
+      })();
+      (() => {
+        if (i === 0 || i === 3 || i === 6) column = 'a';
+        if (i === 1 || i === 4 || i === 7) column = 'b';
+        if (i === 2 || i === 5 || i === 8) column = 'c';
+      })();
 
-      const elementId = `square--${letter}-${i + 1}`;
+      const elementId = `square--${column}-${row}`;
+      const columnClass = `col-${column}`;
+      const rowClass = `row-${row}`;
 
-      arr.push(square(elementId));
+
+      arr.push(square(elementId, columnClass, rowClass));
     }
     return arr;
   })();
