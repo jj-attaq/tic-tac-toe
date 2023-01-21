@@ -16,8 +16,15 @@ const Gameboard = (() => {
 
   const boardArray = (() => {
     const arr = [];
+    let letter = '';
     for(let i = 0; i < 9; i++) {
-      arr.push(square(`square--${i + 1}`));
+      if (i < 3) letter = 'a';
+      if (i < 6 && i > 2) letter = 'b';
+      if (i < 9 && i > 5) letter = 'c';
+
+      const elementId = `square--${letter}-${i + 1}`;
+
+      arr.push(square(elementId));
     }
     return arr;
   })();
@@ -44,6 +51,7 @@ const displayController = (() => {
       draw(Gameboard.board, arr[i]);
     }
   })();
+
   return {
     draw
   }
