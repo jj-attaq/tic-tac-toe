@@ -3,7 +3,6 @@ const log = console.log;
 // Gameboard object filled with html elements and related
 // to be manipulated by other modules
 const Gameboard = (() => {
-
   const board = document.createElement('div');
   board.setAttribute('class', 'game-container');
 
@@ -11,7 +10,8 @@ const Gameboard = (() => {
     const square = document.createElement('div')
     square.classList.add('board-boxes', col, row);
     square.setAttribute('id', id);
-    square.textContent = id;
+    square.textContent = id; // delete later
+
     return square;
   }
 
@@ -20,25 +20,24 @@ const Gameboard = (() => {
     let column = '';
     let row = '';
 
-    for(let i = 0; i < 9; i++) {
-      (() => {
-        if (i < 3) row = '3';
-        if (i < 6 && i > 2) row = '2';
-        if (i < 9 && i > 5) row = '1';
-      })();
-      (() => {
-        if (i === 0 || i === 3 || i === 6) column = 'a';
-        if (i === 1 || i === 4 || i === 7) column = 'b';
-        if (i === 2 || i === 5 || i === 8) column = 'c';
-      })();
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if (j === 0) column = 'a';
+        if (j === 1) column = 'b';
+        if (j === 2) column = 'c';
 
-      const elementId = `square--${column}-${row}`;
-      const columnClass = `col-${column}`;
-      const rowClass = `row-${row}`;
+        if (i === 0) row = '3';
+        if (i === 1) row = '2';
+        if (i === 2) row = '1';
 
+        const elementId = `square--${column}-${row}`;
+        const columnClass = `col-${column}`;
+        const rowClass = `row-${row}`;
 
-      arr.push(square(elementId, columnClass, rowClass));
+        arr.push(square(elementId, columnClass, rowClass));
+      }
     }
+
     return arr;
   })();
 
