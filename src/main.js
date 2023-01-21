@@ -36,15 +36,13 @@ const displayController = (() => {
     return surface.append(obj);
   }
 
-  const displayBoard = (() => {
+  const displayBoard = ((arr) => {
+    arr = Gameboard.boardArray;
     draw(main, Gameboard.board);
-    ((arr) => {
-      arr = Gameboard.boardArray;
-      for(let i = 0; i < arr.length; i++) {
-        draw(Gameboard.board, arr[i]);
-      }
-    })();
 
+    for(let i = 0; i < arr.length; i++) {
+      draw(Gameboard.board, arr[i]);
+    }
   })();
   return {
     draw
