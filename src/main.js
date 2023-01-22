@@ -15,26 +15,31 @@ const Gameboard = (() => {
     return square;
   }
 
+  const refArr = [];
   const boardArray = (() => {
     const arr = [];
     let column = '';
     let row = '';
 
     for (let i = 0; i < 3; i++) {
+      const rowArr = [];
+
+      if (i === 0) row = '3';
+      if (i === 1) row = '2';
+      if (i === 2) row = '1';
+
+      arr.push(rowArr);
       for (let j = 0; j < 3; j++) {
         if (j === 0) column = 'a';
         if (j === 1) column = 'b';
         if (j === 2) column = 'c';
 
-        if (i === 0) row = '3';
-        if (i === 1) row = '2';
-        if (i === 2) row = '1';
-
         const elementId = `square--${column}-${row}`;
         const columnClass = `col-${column}`;
         const rowClass = `row-${row}`;
 
-        arr.push(square(elementId, columnClass, rowClass));
+        //arr.push(square(elementId, columnClass, rowClass));
+        rowArr.push(square(elementId, columnClass, rowClass))
       }
     }
 
@@ -43,6 +48,7 @@ const Gameboard = (() => {
 
   return {
     boardArray,
+    refArr,
     board
   }
 })();
@@ -59,8 +65,10 @@ const displayController = (() => {
     arr = Gameboard.boardArray;
     draw(main, Gameboard.board);
 
-    for(let i = 0; i < arr.length; i++) {
-      draw(Gameboard.board, arr[i]);
+    for(let i = 0; i < 3; i++) {
+      for(let j = 0; j < 3; j++) {
+        draw(Gameboard.board, arr[i][j]);
+      }
     }
   })();
 

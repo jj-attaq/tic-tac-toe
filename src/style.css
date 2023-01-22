@@ -9,6 +9,10 @@
   grid-template-rows: repeat(3, var(--square-r));
 }
 .board-boxes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* font-size: xxx-large; */
   background: #aaa;
   outline: 1px solid black;
   /* border-radius: 0.33rem; */
