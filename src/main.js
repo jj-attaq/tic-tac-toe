@@ -1,11 +1,11 @@
 "use strict";
 const log = console.log;
 
-const playerFactory = (name, symbol) => {
-  return {name, symbol}
-}
 
 const Players = (() => {
+  const playerFactory = (name, symbol) => {
+    return {name, symbol}
+  }
   const player1 = playerFactory('player1', 'X');
   const player2 = playerFactory('player2', 'O');
   return {
@@ -13,23 +13,46 @@ const Players = (() => {
     player2
   }
 })();
+
 const Gameflow = (() => {
   let turn = 1;
 
-  const counter = () => {
-    return turn++
-  }
+  const counter = (() => {
+    const bla = () => {
+      return turn++;
+    }
+    return {
+      turn,
+      bla
+    }
+  })();
 
-  const currentPlayer = () => {
-    if (counter() % 2 === 0) {
+  //can only be called once, otherwise counter() will mess with game flow
+  //called in displayController.displaySymbol()
+  const currentPlayer = () => { 
+    if (counter.bla() % 2 === 0) {
       return Players.player2
     } else {
       return Players.player1
     }
   }
+//TODO: 
+  const winCondition = () => {
+    // 8 possible ways to win per player
+    // use array coordinates to brute force all 8
+    const board = Gameboard.boardArray;
+  //TODO: player should account for player1.symbol and player2.symbol
+    const player = Players.player1.symbol;
+    if(board[0][0].textContent && board[0][1].textContent && board[0][2].textContent === player) {
+      log('you win')
+    }
+    // Gameboard.boardArray[0].forEach(el => el.textContent === 'X')
+  }
 
   return {
-    currentPlayer
+    currentPlayer,
+    winCondition,
+    counter
   }
 })();
 
@@ -43,7 +66,6 @@ const Gameboard = (() => {
     const square = document.createElement('div')
     square.classList.add('board-boxes', col, row);
     square.setAttribute('id', id);
-    //square.textContent = id; // delete later
 
     return square;
   }
@@ -102,26 +124,26 @@ const displayController = (() => {
     }
   })();
 
-  const displaySymbol = (player) => {
-//    const player = Gameflow.currentPlayer();
+  const displaySymbol = ((player) => {
 
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
         const square = Gameboard.boardArray[i][j];
-        if (square.textContent === '') {
-          square.addEventListener('click', () => {
+        square.addEventListener('click', () => {
+          if (square.textContent.length > 0) {
+            return;
+          } else {
             player = Gameflow.currentPlayer();
             square.textContent = player.symbol;
-          });
-        }
+            Gameflow.winCondition();
+          }
+        });
       }
     }
-    return true;
-  }
-
+  })();
+//TODO: delete returns when finished
   return {
-    draw,
-    displaySymbol
+    draw
   }
 })();
 
