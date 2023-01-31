@@ -1,12 +1,10 @@
 "use strict";
 const log = console.log;
 
-// test of X or O listeners
-// TODO: create gameFlow object for turn determination
 const playerFactory = (name, symbol) => {
   return {name, symbol}
 }
-//
+
 const Players = (() => {
   const player1 = playerFactory('player1', 'X');
   const player2 = playerFactory('player2', 'O');
@@ -16,25 +14,21 @@ const Players = (() => {
   }
 })();
 const Gameflow = (() => {
-  // at turn 0, prompt visitor to chose X or O
+  let turn = 1;
+
   const counter = () => {
-    let turn  = 0;
-    return () => {
-      return turn++;
-    }
+    return turn++
   }
-  const turn = counter();
 
   const currentPlayer = () => {
-    let currentPlayer = Players;
-    if (turn() % 2 == 0) {
-      return currentPlayer = Players.player2
+    if (counter() % 2 === 0) {
+      return Players.player2
     } else {
-      return currentPlayer = Players.player1
+      return Players.player1
     }
   }
+
   return {
-    turn,
     currentPlayer
   }
 })();
@@ -76,7 +70,6 @@ const Gameboard = (() => {
         const columnClass = `col-${column}`;
         const rowClass = `row-${row}`;
 
-        //arr.push(square(elementId, columnClass, rowClass));
         rowArr.push(square(elementId, columnClass, rowClass))
       }
     }
@@ -84,8 +77,6 @@ const Gameboard = (() => {
     return arr;
   })();
 
-  const addListeners = (() => {
-  })()
   return {
     boardArray,
     board
@@ -112,23 +103,25 @@ const displayController = (() => {
   })();
 
   const displaySymbol = (player) => {
-    if (Gameflow.turn() % 2 === 0) {
-      player = Players.player2
-    } else {
-      player = Players.player1
-    }
+//    const player = Gameflow.currentPlayer();
+
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
         const square = Gameboard.boardArray[i][j];
-        square.addEventListener('click', () => {
-          square.textContent = player.symbol;
-        });
+        if (square.textContent === '') {
+          square.addEventListener('click', () => {
+            player = Gameflow.currentPlayer();
+            square.textContent = player.symbol;
+          });
+        }
       }
     }
+    return true;
   }
 
   return {
-    draw
+    draw,
+    displaySymbol
   }
 })();
 
