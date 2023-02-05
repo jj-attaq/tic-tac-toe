@@ -17,33 +17,36 @@ const Players = (() => {
 const Gameflow = (() => {
   let turn = 1;
 
-  const counter = (() => {
-    const bla = () => {
-      return turn++;
-    }
-    return {
-      turn,
-      bla
-    }
-  })();
-
+  const counter = () => {
+    return turn++;
+  }
   //can only be called once, otherwise counter() will mess with game flow
   //called in displayController.displaySymbol()
   const currentPlayer = () => { 
-    if (counter.bla() % 2 === 0) {
+    if (turn % 2 === 0) {
       return Players.player2
     } else {
       return Players.player1
     }
   }
-//TODO: 
   const winCondition = () => {
-    // 8 possible ways to win per player
-    // use array coordinates to brute force all 8
     const board = Gameboard.boardArray;
   //TODO: player should account for player1.symbol and player2.symbol
-    const player = Players.player1.symbol;
-    if(board[0][0].textContent && board[0][1].textContent && board[0][2].textContent === player) {
+//    const player = turn % 2 === 0 ? Players.player2.symbol : Players.player1.symbol;
+    const player = currentPlayer().symbol;
+//    log(player, turn)
+    if (
+      ((board[0][0].textContent === player) && (board[0][1].textContent === player) && (board[0][2].textContent === player)) ||
+      ((board[1][0].textContent === player) && (board[1][1].textContent === player) && (board[1][2].textContent === player)) ||
+      ((board[2][0].textContent === player) && (board[2][1].textContent === player) && (board[2][2].textContent === player)) ||
+      //
+      ((board[0][0].textContent === player) && (board[1][0].textContent === player) && (board[2][0].textContent === player)) ||
+      ((board[0][1].textContent === player) && (board[1][1].textContent === player) && (board[2][1].textContent === player)) ||
+      ((board[0][2].textContent === player) && (board[1][2].textContent === player) && (board[2][2].textContent === player)) ||
+      //
+      ((board[0][0].textContent === player) && (board[1][1].textContent === player) && (board[2][2].textContent === player)) ||
+      ((board[2][0].textContent === player) && (board[1][1].textContent === player) && (board[0][2].textContent === player))
+    ) {
       log('you win')
     }
     // Gameboard.boardArray[0].forEach(el => el.textContent === 'X')
@@ -133,9 +136,12 @@ const displayController = (() => {
           if (square.textContent.length > 0) {
             return;
           } else {
+            // order of functions must be the following
+          // 
             player = Gameflow.currentPlayer();
             square.textContent = player.symbol;
             Gameflow.winCondition();
+            Gameflow.counter()
           }
         });
       }
